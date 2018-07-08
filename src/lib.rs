@@ -670,11 +670,9 @@ impl<T: Serialize + DeserializeOwned> Response<T> {
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Success<T> {
-    /// A String specifying the version of the JSON-RPC protocol. MUST be exactly "2.0".
-    pub jsonrpc: V2_0,
-
     /// The value of this member is determined by the method invoked on the Server.
     pub result: T,
+    pub error: Option<String>,
 
     /// This member is REQUIRED.
     ///
@@ -689,8 +687,8 @@ impl<T: Serialize + DeserializeOwned> Success<T> {
     /// Construct a `Success`, i.e. a Response with a `result` object.
     pub fn new(id: Id, result: T) -> Self {
         Self {
-            jsonrpc: V2_0,
             result: result,
+            error: None,
             id: id,
         }
     }
